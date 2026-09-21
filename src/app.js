@@ -1,4 +1,5 @@
 const express = require('express');
+const profileRoutes = require('./routes/profileRoutes');
 
 const app = express();
 
@@ -9,9 +10,7 @@ app.get('/', (req, res) => {
         message: 'DevShowcase API funcionando!'
     });
 });
+app.use('/api/profiles', profileRoutes);
 
-const PORT = 3000;
+module.exports = app;
 
-app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
-});
