@@ -11,13 +11,11 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "rootDir": "./src/",
-    "baseUrl": "./",
     "outDir": "./dist/"
     
   },
   
-  "include": [
-    "**/*.ts"
+      "include": ["src/**/*.ts"],
+"exclude": ["node_modules", "dist", "prisma"]
     
-  ]
-}
+ }
