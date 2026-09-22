@@ -1,5 +1,5 @@
 const express = require('express');
-const profileRoutes = require('./routes/profileRoutes');
+const profileRoutes = require('./routers/profileRoutes');
 
 const app = express();
 
