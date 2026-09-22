@@ -6,6 +6,11 @@ class ProfileRepository {
             data
         });
     }
+    async findById(id) {
+    return prisma.profile.findUnique({
+        where: { id }
+    });
+}
 }
 
 module.exports = new ProfileRepository();
