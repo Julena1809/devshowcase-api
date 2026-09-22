@@ -8,7 +8,7 @@ router.post('/', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    technologyController.getAll(req, res);
+    technologyController.findAll(req, res);
 });
 
 module.exports = router;

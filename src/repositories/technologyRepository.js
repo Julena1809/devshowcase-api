@@ -6,6 +6,13 @@ class TechnologyRepository {
             data
         });
     }
+    async findAll() {
+        return prisma.technology.findMany({
+            orderBy: {
+                name: 'asc'
+            }
+        });
+    }
 }
 
 module.exports = new TechnologyRepository();

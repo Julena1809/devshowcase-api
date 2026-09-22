@@ -33,6 +33,22 @@ class TechnologyController {
             });
         }
     }
+
+    // NOVO MÉTODO: listar todas as tecnologias
+    async findAll(req, res) {
+        try {
+            const technologies = await technologyService.findAll();
+
+            return res.status(200).json(technologies);
+
+        } catch (error) {
+            console.error(error);
+
+            return res.status(500).json({
+                error: 'Erro interno do servidor.'
+            });
+        }
+    }
 }
 
 module.exports = new TechnologyController();
