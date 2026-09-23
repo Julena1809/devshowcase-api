@@ -7,7 +7,6 @@ const projectRepository = {
     return prisma.project.create({
       data: {
         ...projectData,
-
         technologies: {
           create: technologyIds.map((technologyId) => ({
             technology: {
@@ -18,7 +17,6 @@ const projectRepository = {
           }))
         }
       },
-
       include: {
         technologies: {
           include: {
@@ -26,6 +24,32 @@ const projectRepository = {
           }
         }
       }
+    });
+  },
+
+  async updateAverageRating(projectId, averageRating) {
+    return prisma.project.update({
+      where: { id: projectId },
+      data: { averageRating },
+    });
+  },
+
+  async findAll() {
+    return prisma.project.findMany({
+      include: {
+        profile: true,
+        technologies: {
+          include: {
+            technology: true
+          }
+        }
+      }
+    });
+  },
+
+  async findById(id) {
+    return prisma.project.findUnique({
+      where: { id }
     });
   }
 };
