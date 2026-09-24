@@ -2,12 +2,13 @@
   "name": "dewshowcase-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "prisma skills sync || exit 0",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js --watch src --ext js",
+    "postinstall": "prisma generate",
     "contract:emit": "prisma contract emit",
-    "dev": "nodemon src/server.js --watch src --ext js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -17,12 +18,11 @@
     "@prisma/client": "^6.19.3",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "prisma": "^6.19.3",
     "zod": "^4.6.5"
   },
   "devDependencies": {
     "@types/node": "^26.1.2",
-    "nodemon": "^3.1.14",
-    "prima": "^0.0.1",
-    "prisma": "^6.19.3"
+    "nodemon": "^3.1.14"
   }
 }
