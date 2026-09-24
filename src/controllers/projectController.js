@@ -1,66 +1,35 @@
 const CreateProjectDTO = require('../dtos/CreateProjectDTO');
+const ListProjectsQueryDTO = require('../dtos/ListProjectsQueryDTO');
 const projectService = require('../services/projectService');
+const AppError = require('../errors/AppError');
+const parseId = require('../utils/parseId');
 
 const projectController = {
   async create(req, res) {
-    const validation = CreateProjectDTO.safeParse(req.body);
-
-    if (!validation.success) {
-      return res.status(400).json({
-        error: 'Dados inválidos.',
-        details: validation.error.issues
-      });
-    }
+    const data = CreateProjectDTO.parse(req.body);
 
     try {
-      const project = await projectService.create(validation.data);
-
+      const project = await projectService.create(data);
       return res.status(201).json(project);
     } catch (error) {
-      console.error(error);
-
       if (error.code === 'P2025' || error.code === 'P2003') {
-        return res.status(400).json({
-          error: 'Perfil ou tecnologia informada não existe.'
-        });
+        throw new AppError('Perfil ou tecnologia informada não existe.', 400);
       }
-
-      return res.status(500).json({
-        error: 'Erro interno do servidor.'
-      });
+      throw error;
     }
   },
 
   async findAll(req, res) {
-    try {
-      const projects = await projectService.findAll();
-      return res.status(200).json(projects);
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({
-        error: 'Erro interno do servidor.'
-      });
-    }
+    const filters = ListProjectsQueryDTO.parse(req.query);
+    const result = await projectService.findAll(filters);
+    return res.status(200).json(result);
   },
-    async upvote(req, res) {
-    const id = Number(req.params.id);
 
-    if (!Number.isInteger(id) || id <= 0) {
-      return res.status(400).json({ error: 'ID inválido.' });
-    }
-
-    try {
-      const project = await projectService.upvote(id);
-      return res.status(200).json(project);
-    } catch (error) {
-      if (error.code === 'P2025') {
-        return res.status(404).json({ error: 'Projeto não encontrado.' });
-      }
-
-      console.error(error);
-      return res.status(500).json({ error: 'Erro interno do servidor.' });
-    }
-  },
+  async upvote(req, res) {
+    const id = parseId(req.params.id);
+    const project = await projectService.upvote(id);
+    return res.status(200).json(project);
+  }
 };
 
 module.exports = projectController;

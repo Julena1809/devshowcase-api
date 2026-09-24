@@ -1,9 +1,10 @@
 const feedbackService = require('../services/feedbackService');
 const CreateFeedbackDTO = require('../dtos/CreateFeedbackDTO');
+const parseId = require('../utils/parseId');
 
 async function create(req, res, next) {
   try {
-    const projectId = Number(req.params.id);
+    const projectId = parseId(req.params.id);
     const data = CreateFeedbackDTO.parse(req.body);
 
     const averageRating = await feedbackService.createFeedback(projectId, data);

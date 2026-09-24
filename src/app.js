@@ -2,6 +2,9 @@ const express = require('express');
 const profileRoutes = require('./routes/profileRoutes');
 const technologyRoutes = require('./routes/technologyRoutes');
 const projectRoutes = require('./routes/projectRoutes');
+const errorHandler = require('./middlewares/errorHandler');
+const swaggerUi = require('swagger-ui-express');
+const openapi = require('./docs/openapi');
 
 const app = express();
 
@@ -15,11 +18,19 @@ app.get('/', (req, res) => {
 app.use('/api/profiles', profileRoutes);
 app.use('/api/technologies', technologyRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api/projects', projectRoutes);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapi));
 
 app.use((req, res) => {
-  res.status(404).json({ error: 'Rota não encontrada.' });
+  res.status(404).json({ status: 404, error: 'Rota não encontrada.' });
 });
 
+app.use((req, res) => {
+  res.status(404).json({ status: 404, error: 'Rota não encontrada.' });
+});
+
+app.use(errorHandler);
 app.use((err, req, res, next) => {
   console.error(err);
   const statusCode = err.statusCode || 500;

@@ -5,8 +5,8 @@ const projectService = {
     return projectRepository.create(data);
   },
 
-  async findAll() {
-    return projectRepository.findAll();
+  async findAll(filters) {
+    return projectRepository.findAll(filters);
   },
   async upvote(id) {
     return projectRepository.incrementUpvotes(id);
