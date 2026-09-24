@@ -7,7 +7,10 @@ const projectService = {
 
   async findAll() {
     return projectRepository.findAll();
-  }
+  },
+  async upvote(id) {
+    return projectRepository.incrementUpvotes(id);
+  },
 };
 
 module.exports = projectService;

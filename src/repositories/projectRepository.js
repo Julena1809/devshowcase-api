@@ -51,7 +51,16 @@ const projectRepository = {
     return prisma.project.findUnique({
       where: { id }
     });
-  }
+    
+  },
+  async incrementUpvotes(id) {
+    return prisma.project.update({
+      where: { id },
+      data: { upvotes: { increment: 1 } },
+      select: { id: true, title: true, upvotes: true }
+  });
+ }
+  
 };
 
 module.exports = projectRepository;

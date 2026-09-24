@@ -41,7 +41,26 @@ const projectController = {
         error: 'Erro interno do servidor.'
       });
     }
-  }
+  },
+    async upvote(req, res) {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ error: 'ID inválido.' });
+    }
+
+    try {
+      const project = await projectService.upvote(id);
+      return res.status(200).json(project);
+    } catch (error) {
+      if (error.code === 'P2025') {
+        return res.status(404).json({ error: 'Projeto não encontrado.' });
+      }
+
+      console.error(error);
+      return res.status(500).json({ error: 'Erro interno do servidor.' });
+    }
+  },
 };
 
 module.exports = projectController;
